@@ -76,9 +76,11 @@ class AppState extends State<App> {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: qs.map((q) {
               final key = q.correct.name;
-              return Text(rs.containsKey(key)
-                  ? (rs[q.correct.name] ? '⭕️' : '❌')
-                  : '▫️');
+              return Text(
+                rs.containsKey(key)
+                    ? (rs[q.correct.name] ? '⭕️' : '❌')
+                    : q == this.q ? '◾️️' : '▫️',
+              );
             }).toList(),
           ),
         ),
@@ -94,7 +96,9 @@ class AppState extends State<App> {
 
   _handleResult(bool correct) async {
     {
-      rs[q.correct.name] = correct;
+      setState(() {
+        rs[q.correct.name] = correct;
+      });
       await showDialog(
           context: nKey.currentState.overlay.context,
           builder: (c) {
