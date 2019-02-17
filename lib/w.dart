@@ -9,8 +9,8 @@ class W {
   final String desc;
   final String link;
 
-  W.fromJson(Map<String, dynamic> json)
-      : name = json['name'],
-        desc = json['description'],
-        link = json['link'];
+  W.fromJson(Map<String, dynamic> j)
+      : name = j['name'],
+        desc = j['description'],
+        link = j['link'];
 }

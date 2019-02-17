@@ -1,10 +1,10 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:widget_quiz/model/quiz_generator.dart';
+import 'package:widget_quiz/quiz_generator.dart';
 
-// TODO: 他にも書く
+// TODO: 他にも書く。壊れているので直す。
 void main() {
   test('CartItem test', () async {
     final widgets = await load();
-    expect(widgets.length >= 153, true);
+    expect(widgets.length == 10, true);
   });
 }

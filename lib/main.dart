@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import 'model/quiz.dart';
-import 'model/quiz_generator.dart';
-import 'model/w.dart';
+import 'quiz.dart';
+import 'quiz_generator.dart';
+import 'w.dart';
 
 main() => runApp(App());
 
@@ -26,7 +26,7 @@ class AppState extends State<App> {
   }
 
   _reload() async {
-    final r = await generate();
+    final r = await load();
     setState(() {
       qs = r;
       i = 0;
@@ -78,7 +78,7 @@ class AppState extends State<App> {
               final key = q.correct.name;
               return Text(
                 rs.containsKey(key)
-                    ? (rs[q.correct.name] ? '⭕️' : '❌')
+                    ? (rs[key] ? '⭕️' : '❌')
                     : q == this.q ? '◾️️' : '▫️',
               );
             }).toList(),
@@ -96,8 +96,9 @@ class AppState extends State<App> {
 
   _handleResult(bool correct) async {
     {
+      final k = q.correct.name;
       setState(() {
-        rs[q.correct.name] = correct;
+        rs[k] = correct;
       });
       await showDialog(
           context: nKey.currentState.overlay.context,
@@ -111,7 +112,7 @@ class AppState extends State<App> {
                   MaterialButton(
                     minWidth: 0,
                     child: Text(
-                      '📄 ${q.correct.name}',
+                      '📄 ${k}',
                       style: TextStyle(
                         fontSize: 18,
                         decoration: TextDecoration.underline,
