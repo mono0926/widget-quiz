@@ -5,15 +5,12 @@ import 'package:flutter/services.dart';
 import 'quiz.dart';
 import 'w.dart';
 
-Future<List<W>> load() async {
-  return (jsonDecode(await rootBundle.loadString('assets/widgets.json'))
+Future<List<Quiz>> generate() async {
+  final ws = ((jsonDecode(await rootBundle.loadString('assets/widgets.json'))
           as List)
       .map((j) => W.fromJson(j as Map<String, dynamic>))
-      .toList();
-}
-
-Future<List<Quiz>> generate() async {
-  final ws = (await load())..shuffle();
+      .toList())
+    ..shuffle();
   return ws.sublist(0, 10).map((c) {
     return Quiz(
         correct: c,
