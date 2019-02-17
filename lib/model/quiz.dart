@@ -1,13 +1,10 @@
-import 'package:meta/meta.dart';
-
 import 'w.dart';
 
 class Quiz {
   Quiz({
-    @required this.correct,
-    @required List<W> others,
-  })  : assert(others.length == 3),
-        candidates = others
+    this.correct,
+    List<W> others,
+  }) : candidates = others
           ..add(correct)
           ..shuffle();
 
