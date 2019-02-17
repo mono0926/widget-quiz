@@ -7,12 +7,24 @@ import 'model/quiz_generator.dart';
 
 void main() => runApp(App());
 
-class App extends StatelessWidget {
+class App extends StatefulWidget {
+  @override
+  AppState createState() => AppState();
+}
+
+class AppState extends State<App> {
+  final nkey = GlobalKey<NavigatorState>();
+  int i = 0;
+  List<Quiz> qs;
+  final rs = <String, bool>{};
+  Quiz get q => qs[i];
+
   @override
   Widget build(BuildContext c) {
     const title = 'Widget Quiz!';
     return MaterialApp(
       title: title,
+      navigatorKey: nkey,
       theme: ThemeData(primarySwatch: Colors.deepOrange),
       home: Scaffold(
         appBar: AppBar(
@@ -20,36 +32,22 @@ class App extends StatelessWidget {
         ),
         body: FutureBuilder<List<Quiz>>(
           future: generate(),
-          builder: (c, d) {
-            if (!d.hasData) {
+          builder: (c, s) {
+            if (!s.hasData) {
               return Center(child: CircularProgressIndicator());
             }
+            qs = s.data;
             return SafeArea(
-              child: _Page(d.data),
+              child: _buildPage(),
             );
           },
         ),
       ),
     );
   }
-}
 
-class _Page extends StatefulWidget {
-  _Page(this.qs);
-  final List<Quiz> qs;
-
-  @override
-  _PageState createState() => _PageState();
-}
-
-class _PageState extends State<_Page> {
-  int i = 0;
-  final rs = <String, bool>{};
-  Quiz get q => widget.qs[i];
-
-  @override
-  Widget build(BuildContext c) {
-    if (i >= widget.qs.length) {
+  Widget _buildPage() {
+    if (i >= qs.length) {
       return Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -74,7 +72,7 @@ class _PageState extends State<_Page> {
           height: 44,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: widget.qs.map((q) {
+            children: qs.map((q) {
               final key = q.correct.name;
               if (rs.containsKey(key)) {
                 return Text(rs[q.correct.name] ? '⭕️' : '❌');
@@ -95,9 +93,10 @@ class _PageState extends State<_Page> {
 
   void _handleResult(bool correct) async {
     {
+      final ctx = nkey.currentState.overlay.context;
       rs[q.correct.name] = correct;
       await showDialog(
-          context: context,
+          context: ctx,
           builder: (c) {
             return AlertDialog(
               title: correct ? Text('Correct 👍') : Text('Wrong ☹️'),
@@ -125,7 +124,7 @@ class _PageState extends State<_Page> {
                 FlatButton(
                   child: Text('NEXT'),
                   onPressed: () {
-                    Navigator.of(context).pop();
+                    Navigator.of(ctx).pop();
                   },
                 )
               ],
