@@ -1,52 +1,59 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:widget_quiz/model/quiz.dart';
-import 'package:widget_quiz/model/w.dart';
 
+import 'model/quiz.dart';
 import 'model/quiz_generator.dart';
+import 'model/w.dart';
 
-void main() => runApp(App());
+main() => runApp(App());
 
 class App extends StatefulWidget {
   @override
-  AppState createState() => AppState();
+  createState() => AppState();
 }
 
 class AppState extends State<App> {
-  final nkey = GlobalKey<NavigatorState>();
-  int i = 0;
+  final nKey = GlobalKey<NavigatorState>();
   List<Quiz> qs;
-  final rs = <String, bool>{};
   Quiz get q => qs[i];
+  int i = 0;
+  final rs = <String, bool>{};
 
   @override
-  Widget build(BuildContext c) {
+  initState() {
+    super.initState();
+    _reload();
+  }
+
+  _reload() async {
+    final r = await generate();
+    setState(() {
+      qs = r;
+      i = 0;
+      rs.clear();
+    });
+  }
+
+  @override
+  build(BuildContext c) {
     const title = 'Widget Quiz!';
     return MaterialApp(
       title: title,
-      navigatorKey: nkey,
+      navigatorKey: nKey,
       theme: ThemeData(primarySwatch: Colors.deepOrange),
       home: Scaffold(
         appBar: AppBar(
           title: Text(title),
         ),
-        body: FutureBuilder<List<Quiz>>(
-          future: generate(),
-          builder: (c, s) {
-            if (!s.hasData) {
-              return Center(child: CircularProgressIndicator());
-            }
-            qs = s.data;
-            return SafeArea(
-              child: _buildPage(),
-            );
-          },
-        ),
+        body: SafeArea(child: _buildBody()),
       ),
     );
   }
 
-  Widget _buildPage() {
+  Widget _buildBody() {
+    if (qs == null) {
+      return Center(child: CircularProgressIndicator());
+    }
     if (i >= qs.length) {
       return Center(
         child: Column(
@@ -55,12 +62,7 @@ class AppState extends State<App> {
             Text('⭕️: ${rs.values.where((r) => r).length} / 10'),
             RaisedButton(
               child: Text('TRY AGAIN'),
-              onPressed: () {
-                setState(() {
-                  i = 0;
-                  rs.clear();
-                });
-              },
+              onPressed: _reload,
             )
           ],
         ),
@@ -74,15 +76,14 @@ class AppState extends State<App> {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: qs.map((q) {
               final key = q.correct.name;
-              if (rs.containsKey(key)) {
-                return Text(rs[q.correct.name] ? '⭕️' : '❌');
-              }
-              return Text('▫️');
+              return Text(rs.containsKey(key)
+                  ? (rs[q.correct.name] ? '⭕️' : '❌')
+                  : '▫️');
             }).toList(),
           ),
         ),
         Expanded(
-          child: _QuizView(
+          child: _Quiz(
             q,
             onTap: _handleResult,
           ),
@@ -91,15 +92,14 @@ class AppState extends State<App> {
     );
   }
 
-  void _handleResult(bool correct) async {
+  _handleResult(bool correct) async {
     {
-      final ctx = nkey.currentState.overlay.context;
       rs[q.correct.name] = correct;
       await showDialog(
-          context: ctx,
+          context: nKey.currentState.overlay.context,
           builder: (c) {
             return AlertDialog(
-              title: correct ? Text('Correct 👍') : Text('Wrong ☹️'),
+              title: correct ? Text('Correct ⭕️') : Text('Wrong ❌️'),
               content: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
@@ -124,7 +124,7 @@ class AppState extends State<App> {
                 FlatButton(
                   child: Text('NEXT'),
                   onPressed: () {
-                    Navigator.of(ctx).pop();
+                    Navigator.of(c).pop();
                   },
                 )
               ],
@@ -137,14 +137,14 @@ class AppState extends State<App> {
   }
 }
 
-class _QuizView extends StatelessWidget {
-  _QuizView(this.q, {this.onTap});
+class _Quiz extends StatelessWidget {
+  _Quiz(this.q, {this.onTap});
 
   final Quiz q;
   final Function(bool correct) onTap;
 
   @override
-  Widget build(BuildContext c) {
+  build(BuildContext c) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -161,12 +161,8 @@ class _QuizView extends StatelessWidget {
     );
   }
 
-  Widget _buildAnswer(W w) {
-    return RaisedButton(
-      child: Text(w.name),
-      onPressed: () {
-        onTap(w == q.correct);
-      },
-    );
-  }
+  Widget _buildAnswer(W w) => RaisedButton(
+        child: Text(w.name),
+        onPressed: () => onTap(w == q.correct),
+      );
 }
