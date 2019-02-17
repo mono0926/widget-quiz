@@ -153,7 +153,7 @@ class _Quiz extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: 16),
             child: Text(
               q.correct.desc,
-              style: Theme.of(c).textTheme.title,
+              style: TextStyle(fontSize: 18),
             ),
           ),
         ),
