@@ -96,9 +96,7 @@ class AppState extends State<App> {
 
   _handleResult(bool correct) async {
     {
-      setState(() {
-        rs[q.correct] = correct;
-      });
+      setState(() => rs[q.correct] = correct);
       await showDialog(
           context: nKey.currentState.overlay.context,
           builder: (c) {
@@ -110,6 +108,7 @@ class AppState extends State<App> {
                 children: [
                   MaterialButton(
                     minWidth: 0,
+                    padding: EdgeInsets.zero,
                     child: Text(
                       '📄 ${q.correct.name}',
                       style: TextStyle(
@@ -118,7 +117,6 @@ class AppState extends State<App> {
                       ),
                     ),
                     onPressed: () => launch(q.correct.link),
-                    padding: EdgeInsets.zero,
                   ),
                   SizedBox(height: 8),
                   Text(q.correct.desc),
@@ -127,16 +125,12 @@ class AppState extends State<App> {
               actions: [
                 FlatButton(
                   child: Text('NEXT'),
-                  onPressed: () {
-                    Navigator.of(c).pop();
-                  },
+                  onPressed: () => Navigator.of(c).pop(),
                 )
               ],
             );
           });
-      setState(() {
-        i++;
-      });
+      setState(() => i++);
     }
   }
 }
