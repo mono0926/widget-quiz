@@ -79,7 +79,7 @@ class AppState extends State<App> {
               return Text(
                 rs.containsKey(key)
                     ? (rs[key] ? '⭕️' : '❌')
-                    : q == this.q ? '◾️️' : '▫️',
+                    : q == this.q ? '🔲' : '▫️',
               );
             }).toList(),
           ),
