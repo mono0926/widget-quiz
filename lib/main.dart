@@ -17,7 +17,7 @@ class AppState extends State<App> {
   List<Quiz> qs;
   Quiz get q => qs[i];
   int i = 0;
-  final rs = <String, bool>{};
+  final rs = <W, bool>{};
 
   @override
   initState() {
@@ -75,7 +75,7 @@ class AppState extends State<App> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: qs.map((q) {
-              final key = q.correct.name;
+              final key = q.correct;
               return Text(
                 rs.containsKey(key)
                     ? (rs[key] ? '⭕️' : '❌')
@@ -96,9 +96,8 @@ class AppState extends State<App> {
 
   _handleResult(bool correct) async {
     {
-      final k = q.correct.name;
       setState(() {
-        rs[k] = correct;
+        rs[q.correct] = correct;
       });
       await showDialog(
           context: nKey.currentState.overlay.context,
@@ -112,7 +111,7 @@ class AppState extends State<App> {
                   MaterialButton(
                     minWidth: 0,
                     child: Text(
-                      '📄 $k',
+                      '📄 ${q.correct.name}',
                       style: TextStyle(
                         fontSize: 18,
                         decoration: TextDecoration.underline,
