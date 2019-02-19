@@ -146,7 +146,7 @@ class _Quiz extends StatelessWidget {
   _Quiz(this.q, {this.onTap});
 
   final Quiz q;
-  final Function(bool correct) onTap;
+  final Function(bool) onTap;
 
   @override
   build(BuildContext c) {
