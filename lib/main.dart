@@ -112,7 +112,7 @@ class AppState extends State<App> {
                   MaterialButton(
                     minWidth: 0,
                     child: Text(
-                      '📄 ${k}',
+                      '📄 $k',
                       style: TextStyle(
                         fontSize: 18,
                         decoration: TextDecoration.underline,
