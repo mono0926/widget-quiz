@@ -154,11 +154,11 @@ class _Quiz extends StatelessWidget {
             ),
           ),
         ),
-      ]..addAll(q.candidates.map(_buildAnswer)),
+      ]..addAll(q.candidates.map(_ba)),
     );
   }
 
-  Widget _buildAnswer(W w) => RaisedButton(
+  Widget _ba(W w) => RaisedButton(
         child: Text(w.name),
         onPressed: () => onTap(w == q.correct),
       );
