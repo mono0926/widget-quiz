@@ -1,21 +1,20 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import 'quiz.dart';
-import 'quiz_generator.dart';
-import 'w.dart';
+main() => runApp(A());
 
-main() => runApp(App());
-
-class App extends StatefulWidget {
+class A extends StatefulWidget {
   @override
-  createState() => AppState();
+  createState() => AS();
 }
 
-class AppState extends State<App> {
-  final nKey = GlobalKey<NavigatorState>();
-  List<Quiz> qs;
-  Quiz get q => qs[i];
+class AS extends State<A> {
+  final nk = GlobalKey<NavigatorState>();
+  List<Q> qs;
+  Q get q => qs[i];
   int i = 0;
   final rs = <W, bool>{};
 
@@ -36,21 +35,21 @@ class AppState extends State<App> {
 
   @override
   build(BuildContext c) {
-    const title = 'Widget Quiz!';
+    const t = 'Widget Quiz!';
     return MaterialApp(
-      title: title,
-      navigatorKey: nKey,
+      title: t,
+      navigatorKey: nk,
       theme: ThemeData(primarySwatch: Colors.deepOrange),
       home: Scaffold(
         appBar: AppBar(
-          title: Text(title),
+          title: Text(t),
         ),
-        body: SafeArea(child: _buildBody()),
+        body: SafeArea(child: _bb()),
       ),
     );
   }
 
-  Widget _buildBody() {
+  Widget _bb() {
     if (qs == null) {
       return Center(child: CircularProgressIndicator());
     }
@@ -87,18 +86,18 @@ class AppState extends State<App> {
         Expanded(
           child: _Quiz(
             q,
-            onTap: _handleResult,
+            onTap: _hr,
           ),
         ),
       ],
     );
   }
 
-  _handleResult(bool correct) async {
+  _hr(bool correct) async {
     {
       setState(() => rs[q.correct] = correct);
       await showDialog(
-          context: nKey.currentState.overlay.context,
+          context: nk.currentState.overlay.context,
           builder: (c) {
             return AlertDialog(
               title: correct ? Text('Correct ⭕️') : Text('Wrong ❌️'),
@@ -138,7 +137,7 @@ class AppState extends State<App> {
 class _Quiz extends StatelessWidget {
   _Quiz(this.q, {this.onTap});
 
-  final Quiz q;
+  final Q q;
   final Function(bool) onTap;
 
   @override
@@ -163,4 +162,48 @@ class _Quiz extends StatelessWidget {
         child: Text(w.name),
         onPressed: () => onTap(w == q.correct),
       );
+}
+
+class W {
+  W({
+    this.name,
+    this.desc,
+    this.link,
+  });
+
+  final String name;
+  final String desc;
+  final String link;
+
+  W.fromJson(Map<String, dynamic> j)
+      : name = j['name'],
+        desc = j['description'],
+        link = j['link'];
+}
+
+class Q {
+  Q({
+    this.correct,
+    List<W> others,
+  }) : candidates = others
+          ..add(correct)
+          ..shuffle();
+
+  final W correct;
+  final List<W> candidates;
+}
+
+Future<List<Q>> load() async {
+  final ws =
+      ((jsonDecode(await rootBundle.loadString('assets/widgets.json')) as List)
+          .map((j) => W.fromJson(j as Map<String, dynamic>))
+          .toList());
+  return (ws..shuffle()).sublist(0, 10).map((c) {
+    return Q(
+        correct: c,
+        others: (ws..shuffle())
+            .where((w) => w.name != c.name)
+            .toList()
+            .sublist(0, 3));
+  }).toList();
 }
