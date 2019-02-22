@@ -84,14 +84,29 @@ class AS extends State<A> {
           ),
         ),
         Expanded(
-          child: _Quiz(
-            q,
-            onTap: _hr,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Expanded(
+                child: SingleChildScrollView(
+                  padding: EdgeInsets.symmetric(horizontal: 16),
+                  child: Text(
+                    q.correct.desc,
+                    style: TextStyle(fontSize: 18),
+                  ),
+                ),
+              ),
+            ]..addAll(q.candidates.map(_ba)),
           ),
         ),
       ],
     );
   }
+
+  Widget _ba(W w) => RaisedButton(
+        child: Text(w.name),
+        onPressed: () => _hr(w == q.correct),
+      );
 
   _hr(bool correct) async {
     {
@@ -134,36 +149,6 @@ class AS extends State<A> {
   }
 }
 
-class _Quiz extends StatelessWidget {
-  _Quiz(this.q, {this.onTap});
-
-  final Q q;
-  final Function(bool) onTap;
-
-  @override
-  build(BuildContext c) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Expanded(
-          child: SingleChildScrollView(
-            padding: EdgeInsets.symmetric(horizontal: 16),
-            child: Text(
-              q.correct.desc,
-              style: TextStyle(fontSize: 18),
-            ),
-          ),
-        ),
-      ]..addAll(q.candidates.map(_ba)),
-    );
-  }
-
-  Widget _ba(W w) => RaisedButton(
-        child: Text(w.name),
-        onPressed: () => onTap(w == q.correct),
-      );
-}
-
 class W {
   W({
     this.name,
@@ -198,12 +183,13 @@ Future<List<Q>> load() async {
       ((jsonDecode(await rootBundle.loadString('assets/widgets.json')) as List)
           .map((j) => W.fromJson(j as Map<String, dynamic>))
           .toList());
-  return (ws..shuffle()).sublist(0, 10).map((c) {
-    return Q(
-        correct: c,
-        others: (ws..shuffle())
-            .where((w) => w.name != c.name)
-            .toList()
-            .sublist(0, 3));
-  }).toList();
+  return (ws..shuffle())
+      .sublist(0, 10)
+      .map((c) => Q(
+          correct: c,
+          others: (ws..shuffle())
+              .where((w) => w.name != c.name)
+              .toList()
+              .sublist(0, 3)))
+      .toList();
 }
