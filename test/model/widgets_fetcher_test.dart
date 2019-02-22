@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:widget_quiz/quiz_generator.dart';
+import 'package:widget_quiz/main.dart';
 
 // TODO: 他にも書く。壊れているので直す。
 void main() {
