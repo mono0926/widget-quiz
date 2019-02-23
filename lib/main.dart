@@ -1,10 +1,13 @@
 import 'dart:convert';
 
+import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 main() => runApp(A());
+
+const sz = SizedBox(height: 8);
 
 class A extends StatefulWidget {
   @override
@@ -58,7 +61,8 @@ class AS extends State<A> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('⭕️: ${rs.values.where((r) => r).length} / 10'),
+            Text('✅️: ${rs.values.where((r) => r).length} / 10'),
+            sz,
             RaisedButton(
               child: Text('TRY AGAIN'),
               onPressed: _reload,
@@ -71,16 +75,18 @@ class AS extends State<A> {
       children: [
         SizedBox(
           height: 44,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: qs.map((q) {
-              final key = q.correct;
-              return Text(
-                rs.containsKey(key)
-                    ? (rs[key] ? '⭕️' : '❌')
-                    : q == this.q ? '🔲' : '▫️',
-              );
-            }).toList(),
+          child: Center(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: qs.map((q) {
+                final key = q.correct;
+                return Text(
+                  rs.containsKey(key)
+                      ? (rs[key] ? '✅️' : '❌')
+                      : q == this.q ? '🔲' : '▫️',
+                );
+              }).toList(),
+            ),
           ),
         ),
         Expanded(
@@ -111,11 +117,23 @@ class AS extends State<A> {
   _hr(bool correct) async {
     {
       setState(() => rs[q.correct] = correct);
+//      final fc = FlareControls();
+////      Future.delayed(Duration(milliseconds: 500)).then((_) {
+//        fc.play('s');
+//      });
       await showDialog(
           context: nk.currentState.overlay.context,
           builder: (c) {
+            final fa = SizedBox(
+              height: 60,
+              child: FlareActor(
+                'assets/${correct ? 's' : 'f'}.flr',
+//                controller: fc,
+                animation: 's',
+              ),
+            );
             return AlertDialog(
-              title: correct ? Text('Correct ⭕️') : Text('Wrong ❌️'),
+              title: fa,
               content: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
@@ -132,7 +150,7 @@ class AS extends State<A> {
                     ),
                     onPressed: () => launch(q.correct.link),
                   ),
-                  SizedBox(height: 8),
+                  sz,
                   Text(q.correct.desc),
                 ],
               ),
