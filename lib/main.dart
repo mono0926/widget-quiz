@@ -179,10 +179,9 @@ class Q {
 }
 
 Future<List<Q>> load() async {
-  final ws =
-      ((jsonDecode(await rootBundle.loadString('assets/widgets.json')) as List)
-          .map((j) => W.fromJson(j as Map<String, dynamic>))
-          .toList());
+  final ws = ((jsonDecode(await rootBundle.loadString('assets/w.json')) as List)
+      .map((j) => W.fromJson(j as Map<String, dynamic>))
+      .toList());
   return (ws..shuffle())
       .sublist(0, 10)
       .map((c) => Q(
