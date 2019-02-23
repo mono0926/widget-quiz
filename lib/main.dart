@@ -61,7 +61,10 @@ class AS extends State<A> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('✅️: ${rs.values.where((r) => r).length} / 10'),
+            Text(
+              '✅️: ${rs.values.where((r) => r).length} / 10',
+              style: TextStyle(fontSize: 32),
+            ),
             sz,
             RaisedButton(
               child: Text('TRY AGAIN'),
