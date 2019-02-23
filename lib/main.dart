@@ -117,10 +117,6 @@ class AS extends State<A> {
   _hr(bool correct) async {
     {
       setState(() => rs[q.correct] = correct);
-//      final fc = FlareControls();
-////      Future.delayed(Duration(milliseconds: 500)).then((_) {
-//        fc.play('s');
-//      });
       await showDialog(
           context: nk.currentState.overlay.context,
           builder: (c) {
@@ -128,7 +124,6 @@ class AS extends State<A> {
               height: 60,
               child: FlareActor(
                 'assets/${correct ? 's' : 'f'}.flr',
-//                controller: fc,
                 animation: 's',
               ),
             );
