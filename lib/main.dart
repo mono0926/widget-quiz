@@ -38,7 +38,7 @@ class AS extends State<A> {
 
   @override
   build(BuildContext c) {
-    const t = 'Widget Quiz!';
+    const t = 'Widget Quiz';
     return MaterialApp(
       title: t,
       navigatorKey: nk,
