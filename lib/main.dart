@@ -123,15 +123,14 @@ class AS extends State<A> {
       await showDialog(
           context: nk.currentState.overlay.context,
           builder: (c) {
-            final fa = SizedBox(
-              height: 60,
-              child: FlareActor(
-                'assets/${correct ? 's' : 'f'}.flr',
-                animation: 's',
-              ),
-            );
             return AlertDialog(
-              title: fa,
+              title: SizedBox(
+                height: 60,
+                child: FlareActor(
+                  'assets/${correct ? 's' : 'f'}.flr',
+                  animation: 's',
+                ),
+              ),
               content: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
