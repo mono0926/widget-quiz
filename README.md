@@ -1,4 +1,4 @@
-# widget_quiz
+# Widget Quiz
 
 - Quiz source: https://github.com/flutter/website/blob/master/src/_data/catalog/widgets.json
 - Animations
