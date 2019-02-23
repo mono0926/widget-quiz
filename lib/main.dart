@@ -135,23 +135,22 @@ class AS extends State<A> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  MaterialButton(
-                    minWidth: 0,
-                    padding: EdgeInsets.zero,
-                    child: Text(
-                      '📄 ${q.correct.name}',
-                      style: TextStyle(
-                        fontSize: 18,
-                        decoration: TextDecoration.underline,
-                      ),
+                  Text(
+                    q.correct.name,
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
                     ),
-                    onPressed: () => launch(q.correct.link),
                   ),
                   sz,
                   Text(q.correct.desc),
                 ],
               ),
               actions: [
+                FlatButton(
+                  child: Text('DOCUMENTATION'),
+                  onPressed: () => launch(q.correct.link),
+                ),
                 FlatButton(
                   child: Text('NEXT'),
                   onPressed: () => Navigator.of(c).pop(),
