@@ -112,9 +112,12 @@ class AS extends State<A> {
     );
   }
 
-  Widget _ba(W w) => RaisedButton(
-        child: Text(w.name),
-        onPressed: () => _hr(w == q.correct),
+  Widget _ba(W w) => Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8),
+        child: RaisedButton(
+          child: Text(w.name),
+          onPressed: () => _hr(w == q.correct),
+        ),
       );
 
   _hr(bool correct) async {
