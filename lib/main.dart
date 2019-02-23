@@ -62,7 +62,7 @@ class AS extends State<A> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              '✅️: ${rs.values.where((r) => r).length} / 10',
+              '⭕️ ${rs.values.where((r) => r).length} / 10',
               style: TextStyle(fontSize: 32),
             ),
             sz,
@@ -85,7 +85,7 @@ class AS extends State<A> {
                 final key = q.correct;
                 return Text(
                   rs.containsKey(key)
-                      ? (rs[key] ? '✅️' : '❌')
+                      ? (rs[key] ? '⭕️️️' : '❌')
                       : q == this.q ? '🔲' : '▫️',
                 );
               }).toList(),
