@@ -86,7 +86,7 @@ class AS extends State<A> {
                 return Text(
                   rs.containsKey(key)
                       ? (rs[key] ? '⭕️️️' : '❌')
-                      : q == this.q ? '🔲' : '▫️',
+                      : q == this.q ? '🔷' : '▫️',
                 );
               }).toList(),
             ),
