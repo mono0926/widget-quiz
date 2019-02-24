@@ -61,16 +61,16 @@ class AS extends State<A> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            Text(
+              '⭕️ ${rs.values.where((r) => r).length} / 10',
+              style: TextStyle(fontSize: 32),
+            ),
+            sz,
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: qs
                   .map((q) => Text('${rs[q.c] ? '⭕️' : '❌'} ${q.c.n}'))
                   .toList(),
-            ),
-            sz,
-            Text(
-              '⭕️ ${rs.values.where((r) => r).length} / 10',
-              style: TextStyle(fontSize: 32),
             ),
             sz,
             RaisedButton(
