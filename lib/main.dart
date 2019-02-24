@@ -68,17 +68,16 @@ class AS extends State<A> {
                   .toList(),
             ),
             sz,
-          ]..addAll([
-              Text(
-                '⭕️ ${rs.values.where((r) => r).length} / 10',
-                style: TextStyle(fontSize: 32),
-              ),
-              sz,
-              RaisedButton(
-                child: Text('TRY AGAIN'),
-                onPressed: _reload,
-              )
-            ]),
+            Text(
+              '⭕️ ${rs.values.where((r) => r).length} / 10',
+              style: TextStyle(fontSize: 32),
+            ),
+            sz,
+            RaisedButton(
+              child: Text('TRY AGAIN'),
+              onPressed: _reload,
+            )
+          ],
         ),
       );
     }
