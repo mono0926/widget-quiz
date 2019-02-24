@@ -82,7 +82,7 @@ class AS extends State<A> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: qs.map((q) {
-                final key = q.correct;
+                final key = q.c;
                 return Text(
                   rs.containsKey(key)
                       ? (rs[key] ? '⭕️️️' : '❌')
@@ -100,12 +100,12 @@ class AS extends State<A> {
                 child: SingleChildScrollView(
                   padding: EdgeInsets.symmetric(horizontal: 16),
                   child: Text(
-                    q.correct.desc,
+                    q.c.d,
                     style: TextStyle(fontSize: 18),
                   ),
                 ),
               ),
-            ]..addAll(q.candidates.map(_ba)),
+            ]..addAll(q.cs.map(_ba)),
           ),
         ),
       ],
@@ -115,14 +115,14 @@ class AS extends State<A> {
   Widget _ba(W w) => Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8),
         child: RaisedButton(
-          child: Text(w.name),
-          onPressed: () => _hr(w == q.correct),
+          child: Text(w.n),
+          onPressed: () => _hr(w == q.c),
         ),
       );
 
   _hr(bool correct) async {
     {
-      setState(() => rs[q.correct] = correct);
+      setState(() => rs[q.c] = correct);
       await showDialog(
           context: nk.currentState.overlay.context,
           builder: (c) {
@@ -139,20 +139,20 @@ class AS extends State<A> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    q.correct.name,
+                    q.c.n,
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   sz,
-                  Text(q.correct.desc),
+                  Text(q.c.d),
                 ],
               ),
               actions: [
                 FlatButton(
                   child: Text('DOCUMENTATION'),
-                  onPressed: () => launch(q.correct.link),
+                  onPressed: () => launch(q.c.l),
                 ),
                 FlatButton(
                   child: Text('NEXT'),
@@ -168,44 +168,42 @@ class AS extends State<A> {
 
 class W {
   W({
-    this.name,
-    this.desc,
-    this.link,
+    this.n,
+    this.d,
+    this.l,
   });
 
-  final String name;
-  final String desc;
-  final String link;
+  final String n;
+  final String d;
+  final String l;
 
-  W.fromJson(Map<String, dynamic> j)
-      : name = j['name'],
-        desc = j['description'],
-        link = j['link'];
+  W.fromJson(Map j)
+      : n = j['name'],
+        d = j['description'],
+        l = j['link'];
 }
 
 class Q {
   Q({
-    this.correct,
+    this.c,
     List<W> others,
-  }) : candidates = others
-          ..add(correct)
+  }) : cs = others
+          ..add(c)
           ..shuffle();
 
-  final W correct;
-  final List<W> candidates;
+  final W c;
+  final List<W> cs;
 }
 
 Future<List<Q>> load() async {
   final ws = ((jsonDecode(await rootBundle.loadString('assets/w.json')) as List)
-      .map((j) => W.fromJson(j as Map<String, dynamic>))
+      .map((j) => W.fromJson(j as Map))
       .toList());
   return (ws..shuffle())
       .sublist(0, 10)
       .map((c) => Q(
-          correct: c,
-          others: (ws..shuffle())
-              .where((w) => w.name != c.name)
-              .toList()
-              .sublist(0, 3)))
+          c: c,
+          others:
+              (ws..shuffle()).where((w) => w.n != c.n).toList().sublist(0, 3)))
       .toList();
 }
