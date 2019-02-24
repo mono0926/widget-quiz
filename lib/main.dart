@@ -54,23 +54,31 @@ class AS extends State<A> {
 
   Widget _bb() {
     if (qs == null) {
-      return Center(child: CircularProgressIndicator());
+      return Container();
     }
     if (i >= qs.length) {
       return Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
-              '⭕️ ${rs.values.where((r) => r).length} / 10',
-              style: TextStyle(fontSize: 32),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: qs
+                  .map((q) => Text('${rs[q.c] ? '⭕️' : '❌'} ${q.c.n}'))
+                  .toList(),
             ),
             sz,
-            RaisedButton(
-              child: Text('TRY AGAIN'),
-              onPressed: _reload,
-            )
-          ],
+          ]..addAll([
+              Text(
+                '⭕️ ${rs.values.where((r) => r).length} / 10',
+                style: TextStyle(fontSize: 32),
+              ),
+              sz,
+              RaisedButton(
+                child: Text('TRY AGAIN'),
+                onPressed: _reload,
+              )
+            ]),
         ),
       );
     }
