@@ -6,7 +6,6 @@ import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 main() => runApp(A());
-
 const sz = SizedBox(height: 8);
 
 class A extends StatefulWidget {
@@ -19,7 +18,7 @@ class AS extends State<A> {
   List<Q> qs;
   Q get q => qs[i];
   int i = 0;
-  final rs = <W, bool>{};
+  final rs = <W, W>{};
 
   @override
   initState() {
@@ -62,14 +61,14 @@ class AS extends State<A> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              '⭕️ ${rs.values.where((r) => r).length} / 10',
+              '⭕️ ${rs.entries.where((e) => e.key == e.value).length} / 10',
               style: TextStyle(fontSize: 32),
             ),
             sz,
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: qs
-                  .map((q) => Text('${rs[q.c] ? '⭕️' : '❌'} ${q.c.n}'))
+                  .map((q) => Text('${rs[q.c] == q.c ? '⭕️' : '❌'} ${q.c.n}'))
                   .toList(),
             ),
             sz,
@@ -90,11 +89,9 @@ class AS extends State<A> {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: qs.map((q) {
                 final key = q.c;
-                return Text(
-                  rs.containsKey(key)
-                      ? (rs[key] ? '⭕️️️' : '❌')
-                      : q == this.q ? '🔷' : '▫️',
-                );
+                return Text(rs.containsKey(key)
+                    ? (rs[key] == key ? '⭕️️️' : '❌')
+                    : q == this.q ? '🔷' : '▫️');
               }).toList(),
             ),
           ),
@@ -119,17 +116,22 @@ class AS extends State<A> {
     );
   }
 
-  Widget _ba(W w) => Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8),
-        child: RaisedButton(
-          child: Text(w.n),
-          onPressed: () => _hr(w == q.c),
-        ),
-      );
+  Widget _ba(W w) {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 8),
+      child: RaisedButton(
+        color: rs[q.c] == null
+            ? null
+            : w == q.c ? Colors.green : w == rs[q.c] ? Colors.red : null,
+        child: Text(w.n),
+        onPressed: () => _hr(w),
+      ),
+    );
+  }
 
-  _hr(bool correct) async {
+  _hr(W w) async {
     {
-      setState(() => rs[q.c] = correct);
+      setState(() => rs[q.c] = w);
       await showDialog(
           context: nk.currentState.overlay.context,
           builder: (c) {
@@ -137,7 +139,7 @@ class AS extends State<A> {
               title: SizedBox(
                 height: 60,
                 child: FlareActor(
-                  'assets/${correct ? 's' : 'f'}.flr',
+                  'assets/${q.c == w ? 's' : 'f'}.flr',
                   animation: 's',
                 ),
               ),
@@ -184,7 +186,7 @@ class W {
   final String d;
   final String l;
 
-  W.fromJson(Map j)
+  W.fj(Map j)
       : n = j['name'],
         d = j['description'],
         l = j['link'];
@@ -193,8 +195,8 @@ class W {
 class Q {
   Q({
     this.c,
-    List<W> others,
-  }) : cs = others
+    List<W> os,
+  }) : cs = os
           ..add(c)
           ..shuffle();
 
@@ -204,13 +206,12 @@ class Q {
 
 Future<List<Q>> load() async {
   final ws = ((jsonDecode(await rootBundle.loadString('assets/w.json')) as List)
-      .map((j) => W.fromJson(j as Map))
+      .map((j) => W.fj(j as Map))
       .toList());
   return (ws..shuffle())
       .sublist(0, 10)
       .map((c) => Q(
           c: c,
-          others:
-              (ws..shuffle()).where((w) => w.n != c.n).toList().sublist(0, 3)))
+          os: (ws..shuffle()).where((w) => w.n != c.n).toList().sublist(0, 3)))
       .toList();
 }
