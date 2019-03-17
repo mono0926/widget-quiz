@@ -6,14 +6,17 @@ Confirmed by `find ./lib -name "*.dart" | xargs cat | wc -c`.
 
 ## Description
 
+Answer to questions | .
+--- | --
+![Answer to questions](screenshots/1.png) | ![Answer to questions](screenshots/2.png)
+
 Correct answer | after
 --- | --
-![Correct answer](screenshots/1.png) | ![Incorrect answer](screenshots/2.png)
-
+![Correct answer](screenshots/3.png) | ![Incorrect answer](screenshots/4.png)
 
 Jump to documentation | Result summary
 --- | --
-![Jump to documentation](screenshots/3.png) | ![Result summary](screenshots/4.png)
+![Jump to documentation](screenshots/5.png) | ![Result summary](screenshots/6.png)
 
 ## Credits
 
