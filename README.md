@@ -1,10 +1,16 @@
 # Widget Quiz
 
+With this app, users will learn Flutter widgets more effectively.
+
+1. Answer to Flutter widget quizez.
+2. You can jump to document if you like after answered a quiz.
+3. After answering 10 quizez, the summary is shown.
+
 ## Dart code size: 5,109 Bytes
 
 Confirmed by `find ./lib -name "*.dart" | xargs cat | wc -c`.
 
-## Description
+## Screenshots
 
 Answer to questions | .
 --- | --
