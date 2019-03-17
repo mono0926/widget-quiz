@@ -2,7 +2,7 @@ name: widget_quiz
 description: Widget Quiz!
 version: 1.0.0
 environment:
-  sdk: ">=2.0.0-dev.68.0 <3.0.0"
+  sdk: '>=2.1.0 <3.0.0'
 dependencies:
   flutter:
     sdk: flutter
@@ -20,6 +20,6 @@ flutter:
 flutter_icons:
   android: true
   ios: true
-  image_path: "assets/icon/icon.png"
-  adaptive_icon_foreground: "assets/icon/icon_foreground.png"
-  adaptive_icon_background: "assets/icon/icon_background.png"
+  image_path: 'assets/icon/icon.png'
+  adaptive_icon_foreground: 'assets/icon/icon_foreground.png'
+  adaptive_icon_background: 'assets/icon/icon_background.png'
