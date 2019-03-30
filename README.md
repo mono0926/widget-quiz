@@ -2,7 +2,7 @@
 
 ![GIF](screenshots/quiz.gif)
 
-With this app, users will learn Flutter widgets more effectively.
+With this app, users will learn Flutter widgets more efficiently.
 
 1. Answer to Flutter widget quizez.
 2. You can jump to document if you like after answered a quiz.
