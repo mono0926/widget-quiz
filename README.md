@@ -30,7 +30,7 @@ Jump to documentation | Result summary
 
 ## Install
 
-Not released officially yet, but you can run from this project or install via these links.
+Not released officially yet, but you can run from the project or install via these links.
 
 - [iOS (TestFlight)](https://testflight.apple.com/join/lv0nu3lw)
 - [Android (Beta)](https://play.google.com/apps/testing/com.mono0926.widgetquiz)
