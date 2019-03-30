@@ -24,6 +24,13 @@ Jump to documentation | Result summary
 --- | --
 ![Jump to documentation](screenshots/5.png) | ![Result summary](screenshots/6.png)
 
+## Install
+
+Not released officially yet, but you can run from this project or install via these links.
+
+- [iOS (TestFlight)](https://testflight.apple.com/join/lv0nu3lw)
+- [Android (Beta)](https://play.google.com/apps/testing/com.mono0926.widgetquiz)
+
 ## Credits
 
 - Quiz source: https://github.com/flutter/website/blob/master/src/_data/catalog/widgets.json
