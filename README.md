@@ -5,7 +5,7 @@
 With this app, users will learn Flutter widgets more efficiently.
 
 1. Answer to Flutter widget quizez.
-2. You can jump to document if you like after answered a quiz.
+2. You can jump to document if you like after answered to a quiz.
 3. After answering 10 quizez, the summary is shown.
 
 ## Dart code size: 5,109 Bytes
