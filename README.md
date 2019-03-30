@@ -10,7 +10,7 @@ With this app, users will learn Flutter widgets more efficiently.
 
 ## Dart code size: 5,109 Bytes
 
-This app was created for [Flutter Create - Flutter](https://flutter.dev/create), which limits Dart code size to 5KB.
+This app was created for [Flutter Create](https://flutter.dev/create), which limits Dart code size to 5KB.
 
 Confirmed by `find ./lib -name "*.dart" | xargs cat | wc -c`.
 
