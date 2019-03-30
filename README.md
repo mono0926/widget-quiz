@@ -1,5 +1,7 @@
 # Widget Quiz
 
+![GIF](screenshots/quiz.gif)
+
 With this app, users will learn Flutter widgets more effectively.
 
 1. Answer to Flutter widget quizez.
