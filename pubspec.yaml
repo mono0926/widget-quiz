@@ -1,14 +1,18 @@
 name: widget_quiz
 description: Widget Quiz!
-version: 1.0.0
+version: 1.0.0+1
 environment:
-  sdk: '>=2.1.0 <3.0.0'
+  sdk: '>=2.3.0 <3.0.0'
 dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^0.1.2
-  url_launcher: ^5.0.1
-  flare_flutter: ^1.2.3
+  flare_flutter: any
+  mono_kit: any
+  provider: any
+  simple_logger: any
+  url_launcher: any
+  rxdart: any
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -16,7 +20,8 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   assets:
-    - assets/
+    - assets/animation/
+    - assets/data/
 flutter_icons:
   android: true
   ios: true

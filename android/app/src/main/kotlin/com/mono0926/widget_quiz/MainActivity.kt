@@ -1,4 +1,4 @@
-package com.mono0926.widgetquiz
+package com.mono0926.widget_quiz
 
 import android.os.Bundle
 
