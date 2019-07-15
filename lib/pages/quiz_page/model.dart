@@ -15,31 +15,38 @@ class Model extends ChangeNotifier {
 
   List<Quiz> _quizList;
   bool _quizListLoaded = false;
-  bool get quizListLoaded => _quizListLoaded;
-
   int _index = 0;
+  final _answers = <WidgetData>[];
+  final _answered = StreamController<bool>();
+
+  bool get quizListLoaded => _quizListLoaded;
   bool get _hasQuiz => _index >= 0 && _index < (_quizList?.length ?? 0);
   Quiz get quiz => _hasQuiz ? _quizList[_index] : null;
-  final _history = _History();
   List<ProgressKind> get progress => _quizList
       .asMap()
       .map<int, ProgressKind>((index, quiz) => MapEntry<int, ProgressKind>(
             index,
-            index >= 0 && index < _history.values.length
-                ? (_history.values[index]
+            index >= 0 && index < _answers.length
+                ? (_answers[index] == _quizList[index].correct
                     ? ProgressKind.correct
                     : ProgressKind.incorrect)
                 : _index == index ? ProgressKind.current : ProgressKind.notYet,
           ))
       .values
       .toList();
+
   ProgressKind get current => progress[_index];
-  Stream<bool> get answered => _history.answered;
+  WidgetData get currentAnswer =>
+      current == ProgressKind.correct || current == ProgressKind.incorrect
+          ? _answers[_index]
+          : null;
+  Stream<bool> get answered => _answered.stream;
 
   void answer(WidgetData widget) {
     final correct = quiz.correct == widget;
     logger.info('correct: $correct');
-    _history.add(correct);
+    _answers.add(widget);
+    _answered.add(correct);
     notifyListeners();
   }
 
@@ -63,27 +70,9 @@ class Model extends ChangeNotifier {
 
   @override
   void dispose() {
-    _history.dispose();
+    _answered.close();
 
     super.dispose();
-  }
-}
-
-class _History {
-  final _values = <bool>[];
-  final _stream = StreamController<bool>();
-
-  Stream<bool> get answered => _stream.stream;
-  List<bool> get values => _values;
-
-  // ignore: avoid_positional_boolean_parameters
-  void add(bool result) {
-    _values.add(result);
-    _stream.add(result);
-  }
-
-  void dispose() {
-    _stream.close();
   }
 }
 
