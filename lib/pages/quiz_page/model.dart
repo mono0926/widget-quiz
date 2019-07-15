@@ -21,16 +21,19 @@ class Model extends ChangeNotifier {
   bool get _hasQuiz => _index >= 0 && _index < (_quizList?.length ?? 0);
   Quiz get quiz => _hasQuiz ? _quizList[_index] : null;
   final _history = _History();
-  List<bool> get progress => _quizList
+  List<ProgressKind> get progress => _quizList
       .asMap()
-      .map<int, bool>((index, quiz) => MapEntry<int, bool>(
+      .map<int, ProgressKind>((index, quiz) => MapEntry<int, ProgressKind>(
             index,
             index >= 0 && index < _history.values.length
-                ? _history.values[index]
-                : null,
+                ? (_history.values[index]
+                    ? ProgressKind.correct
+                    : ProgressKind.incorrect)
+                : _index == index ? ProgressKind.current : ProgressKind.notYet,
           ))
       .values
       .toList();
+  ProgressKind get current => progress[_index];
   Stream<bool> get answered => _history.answered;
 
   void answer(WidgetData widget) {
@@ -82,4 +85,11 @@ class _History {
   void dispose() {
     _stream.close();
   }
+}
+
+enum ProgressKind {
+  correct,
+  incorrect,
+  current,
+  notYet,
 }

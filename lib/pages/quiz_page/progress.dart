@@ -13,11 +13,26 @@ class Progress extends StatelessWidget {
       child: Center(
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: model.progress.map((result) {
-            return Text(result == null ? '▫' : result ? '⭕️️️' : '❌');
+          children: model.progress.map((kind) {
+            return Text(_convertToStringFromProgressKind(kind));
           }).toList(),
         ),
       ),
     );
+  }
+
+  String _convertToStringFromProgressKind(ProgressKind kind) {
+    switch (kind) {
+      case ProgressKind.correct:
+        return '⭕️️️';
+      case ProgressKind.incorrect:
+        return '❌';
+      case ProgressKind.notYet:
+        return '▫️';
+      case ProgressKind.current:
+        return '🔷';
+    }
+    assert(false, 'invalid kind: $kind');
+    return '';
   }
 }

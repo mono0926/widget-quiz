@@ -68,7 +68,7 @@ class __PageState extends State<_Page> {
     return Column(
       children: [
         const Progress(),
-        Divider(
+        const Divider(
           indent: _horizontalMargin,
           endIndent: _horizontalMargin,
           height: 0,
