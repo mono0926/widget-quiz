@@ -4,6 +4,7 @@ import 'package:widget_quiz/model/model.dart';
 import 'package:widget_quiz/pages/quiz_page/selections.dart';
 
 import 'model.dart';
+import 'progress.dart';
 import 'question.dart';
 import 'result_presenter.dart';
 
@@ -36,7 +37,7 @@ class __PageState extends State<_Page> {
   void initState() {
     super.initState();
 
-    _model.result.listen((correct) {
+    _model.answered.listen((correct) {
       _resultPresenter.show(context, model: _model, correct: correct);
     });
   }
@@ -66,6 +67,7 @@ class __PageState extends State<_Page> {
   Widget _buildQuiz() {
     return Column(
       children: [
+        Progress(),
         Expanded(
           child: SingleChildScrollView(
             padding:
