@@ -23,8 +23,6 @@ class QuizPage extends StatelessWidget {
 class _Page extends StatefulWidget {
   const _Page({Key key}) : super(key: key);
 
-  static const double _horizontalMargin = 16;
-
   @override
   __PageState createState() => __PageState();
 }
@@ -32,6 +30,8 @@ class _Page extends StatefulWidget {
 class __PageState extends State<_Page> {
   Model get _model => Provider.of<Model>(context, listen: false);
   final _resultPresenter = ResultPresenter();
+
+  static const double _horizontalMargin = 16;
 
   @override
   void initState() {
@@ -67,18 +67,22 @@ class __PageState extends State<_Page> {
   Widget _buildQuiz() {
     return Column(
       children: [
-        Progress(),
+        const Progress(),
+        Divider(
+          indent: _horizontalMargin,
+          endIndent: _horizontalMargin,
+          height: 0,
+        ),
         Expanded(
           child: SingleChildScrollView(
-            padding:
-                const EdgeInsets.symmetric(horizontal: _Page._horizontalMargin),
+            padding: const EdgeInsets.all(_horizontalMargin),
             physics: const AlwaysScrollableScrollPhysics(),
             child: const Question(),
           ),
         ),
         const Padding(
           child: Selections(),
-          padding: EdgeInsets.symmetric(horizontal: _Page._horizontalMargin),
+          padding: EdgeInsets.symmetric(horizontal: _horizontalMargin),
         ),
       ],
     );

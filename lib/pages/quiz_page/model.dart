@@ -20,18 +20,23 @@ class Model extends ChangeNotifier {
   int _index = 0;
   bool get _hasQuiz => _index >= 0 && _index < (_quizList?.length ?? 0);
   Quiz get quiz => _hasQuiz ? _quizList[_index] : null;
-  final _result = _Result();
-  Stream<bool> get answered => _result.answered;
-  ResultStatus get resultStatus => _result.value;
+  final _history = _History();
+  List<bool> get progress => _quizList
+      .asMap()
+      .map<int, bool>((index, quiz) => MapEntry<int, bool>(
+            index,
+            index >= 0 && index < _history.values.length
+                ? _history.values[index]
+                : null,
+          ))
+      .values
+      .toList();
+  Stream<bool> get answered => _history.answered;
 
   void answer(WidgetData widget) {
-    assert(
-      _result.value == ResultStatus.notAnswered,
-      'invalid result: ${_result.value}',
-    );
     final correct = quiz.correct == widget;
     logger.info('correct: $correct');
-    _result.value = correct ? ResultStatus.correct : ResultStatus.incorrect;
+    _history.add(correct);
     notifyListeners();
   }
 
@@ -41,7 +46,6 @@ class Model extends ChangeNotifier {
       logger.info('not more quiz');
       return;
     }
-    _result.value = ResultStatus.notAnswered;
     logger.info('changed to next quiz');
     notifyListeners();
   }
@@ -56,33 +60,26 @@ class Model extends ChangeNotifier {
 
   @override
   void dispose() {
-    _result.dispose();
+    _history.dispose();
 
     super.dispose();
   }
 }
 
-class _Result {
-  var _value = ResultStatus.notAnswered;
+class _History {
+  final _values = <bool>[];
   final _stream = StreamController<bool>();
 
-  ResultStatus get value => _value;
   Stream<bool> get answered => _stream.stream;
+  List<bool> get values => _values;
 
-  set value(ResultStatus result) {
-    _value = result;
-    if (result != ResultStatus.notAnswered) {
-      _stream.add(result == ResultStatus.correct);
-    }
+  // ignore: avoid_positional_boolean_parameters
+  void add(bool result) {
+    _values.add(result);
+    _stream.add(result);
   }
 
   void dispose() {
     _stream.close();
   }
-}
-
-enum ResultStatus {
-  notAnswered,
-  correct,
-  incorrect,
 }
