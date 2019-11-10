@@ -8,7 +8,7 @@ class Model extends ChangeNotifier {
   Model({
     @required this.quizLoader,
   }) {
-    _load();
+    load();
   }
 
   final QuizLoader quizLoader;
@@ -19,9 +19,10 @@ class Model extends ChangeNotifier {
   final _answers = <WidgetData>[];
   final _answered = StreamController<bool>();
 
+  List<Quiz> get quizList => _quizList;
   bool get quizListLoaded => _quizListLoaded;
-  bool get _hasQuiz => _index >= 0 && _index < (_quizList?.length ?? 0);
-  Quiz get quiz => _hasQuiz ? _quizList[_index] : null;
+  bool get hasQuiz => _index >= 0 && _index < (_quizList?.length ?? 0);
+  Quiz get quiz => hasQuiz ? _quizList[_index] : null;
   List<ProgressKind> get progress => _quizList
       .asMap()
       .map<int, ProgressKind>((index, quiz) => MapEntry<int, ProgressKind>(
@@ -52,17 +53,19 @@ class Model extends ChangeNotifier {
 
   void next() {
     _index++;
-    if (!_hasQuiz) {
+    notifyListeners();
+    if (!hasQuiz) {
       logger.info('not more quiz');
       return;
     }
     logger.info('changed to next quiz');
-    notifyListeners();
   }
 
-  void _load() async {
+  void load() async {
+    _index = 0;
+    _answers.clear();
     // TODO(mono): くるくる出したいのでとりあえず
-    await Future<void>.delayed(const Duration(seconds: 1));
+    await Future<void>.delayed(const Duration(milliseconds: 400));
     _quizList = await quizLoader.load();
     _quizListLoaded = true;
     notifyListeners();

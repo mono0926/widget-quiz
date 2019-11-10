@@ -8,6 +8,9 @@ class Selections extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final model = Provider.of<Model>(context);
+    if (model.quiz == null) {
+      return const SizedBox();
+    }
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: model.quiz.candidates

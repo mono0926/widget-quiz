@@ -37,8 +37,9 @@ class __PageState extends State<_Page> {
   void initState() {
     super.initState();
 
-    _model.answered.listen((correct) {
-      _resultPresenter.show(context, model: _model, correct: correct);
+    _model.answered.listen((correct) async {
+      await _resultPresenter.show(context, model: _model, correct: correct);
+      _model.next();
     });
   }
 
@@ -58,7 +59,7 @@ class __PageState extends State<_Page> {
       child: AnimatedSwitcher(
         duration: const Duration(milliseconds: 200),
         child: model.quizListLoaded
-            ? _buildQuiz()
+            ? model.hasQuiz ? _buildQuiz() : _buildResult()
             : const Center(child: CircularProgressIndicator()),
       ),
     );
@@ -85,6 +86,39 @@ class __PageState extends State<_Page> {
           padding: EdgeInsets.symmetric(horizontal: _horizontalMargin),
         ),
       ],
+    );
+  }
+
+  Widget _buildResult() {
+    final model = Provider.of<Model>(context);
+//    model
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            '⭕️ ${model.progress.where((p) => p == ProgressKind.correct).length} / 10',
+            style: const TextStyle(fontSize: 32),
+          ),
+          const SizedBox(height: 8),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: model.progress
+                .asMap()
+                .map((index, p) => MapEntry(
+                    index,
+                    Text(
+                        '${p == ProgressKind.correct ? '⭕️' : '❌'} ${model.quizList[index].correct.name}')))
+                .values
+                .toList(),
+          ),
+          const SizedBox(height: 8),
+          RaisedButton(
+            child: Text('TRY AGAIN'),
+            onPressed: model.load,
+          )
+        ],
+      ),
     );
   }
 }

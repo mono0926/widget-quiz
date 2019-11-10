@@ -5,12 +5,12 @@ import 'package:url_launcher/url_launcher.dart';
 import 'model.dart';
 
 class ResultPresenter {
-  void show(
+  Future show(
     BuildContext context, {
     @required Model model,
     @required bool correct,
   }) {
-    showDialog<void>(
+    return showDialog<void>(
         context: context,
         builder: (context) {
           final quiz = model.quiz;
@@ -46,7 +46,6 @@ class ResultPresenter {
               FlatButton(
                 child: const Text('NEXT'),
                 onPressed: () {
-                  model.next();
                   Navigator.of(context).pop();
                 },
               )

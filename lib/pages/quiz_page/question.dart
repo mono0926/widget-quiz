@@ -9,6 +9,9 @@ class Question extends StatelessWidget {
   Widget build(BuildContext context) {
     final model = Provider.of<Model>(context);
     final quiz = model.quiz;
+    if (quiz == null) {
+      return const SizedBox();
+    }
     return Text(
       quiz.correct.description,
       style: Theme.of(context).textTheme.headline,
