@@ -56,31 +56,31 @@ class __PageState extends State<_Page> {
     final model = Provider.of<Model>(context);
     return SafeArea(
       child: AnimatedSwitcher(
-        duration: Duration(milliseconds: 200),
+        duration: const Duration(milliseconds: 200),
         child: model.quizListLoaded
             ? _buildQuiz()
-            : Center(child: const CircularProgressIndicator()),
+            : const Center(child: CircularProgressIndicator()),
       ),
     );
   }
 
   Widget _buildQuiz() {
     return Column(
-      children: [
-        const Progress(),
-        const Divider(
+      children: const [
+        Progress(),
+        Divider(
           indent: _horizontalMargin,
           endIndent: _horizontalMargin,
           height: 0,
         ),
         Expanded(
           child: SingleChildScrollView(
-            padding: const EdgeInsets.all(_horizontalMargin),
-            physics: const AlwaysScrollableScrollPhysics(),
-            child: const Question(),
+            padding: EdgeInsets.all(_horizontalMargin),
+            physics: AlwaysScrollableScrollPhysics(),
+            child: Question(),
           ),
         ),
-        const Padding(
+        Padding(
           child: Selections(),
           padding: EdgeInsets.symmetric(horizontal: _horizontalMargin),
         ),
